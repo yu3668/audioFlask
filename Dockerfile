@@ -17,18 +17,22 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
+# Creates a non-root user and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN useradd -u 1000 ubuntu && chown -R ubuntu /home/ubuntu
+USER ubuntu
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
+#ARG UID=10001
+#RUN adduser \
+   # --disabled-password \
+    #--gecos "" \
+    #--home "/nonexistent" \
+    #--shell "/sbin/nologin" \
+    #--no-create-home \
+    #--uid "${UID}" \
+    #appuser '''
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
