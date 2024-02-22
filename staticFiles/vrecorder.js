@@ -42,6 +42,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 { "make":"Jaguar","model": "Mark VII" }
                ];
                */
+            const url=[{audiourl:audioURL.toString()}]
             fetch("http://127.0.0.1:5000/receiver", 
         {
             method: 'POST',
@@ -50,7 +51,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 'Accept': 'application/json'
             },
         
-        body:JSON.stringify(audioURL.toString())}).then(res=>{
+        body:JSON.stringify(url)}).then(res=>{
                 if(res.ok){
                     return res.json()
                 }else{
@@ -155,7 +156,7 @@ const application = (index) => {
             addAudio()
             
             addButton('record', 'record()', 'Record Again')
-            downloadAudio()
+            //downloadAudio()
             break
 
         default:
