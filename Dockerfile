@@ -19,7 +19,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 # Creates a non-root user and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN useradd -u 1000 ubuntu && chown -R ubuntu /home/ubuntu
+RUN useradd -u 1000 ubuntu 
 USER ubuntu
 
 # Create a non-privileged user that the app will run under.
