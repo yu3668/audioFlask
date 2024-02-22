@@ -24,7 +24,8 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             chunks = []
             //audioURL = window.URL.createObjectURL(blob)
             
-            document.querySelector('audio').src = audioURL
+            const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+            audioURL = window.URL.createObjectURL(blob)
 
             /*const a = document.createElement("a");
             document.body.appendChild(a);
@@ -40,6 +41,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 { "make":"Mercedes-Benz", "model":"220SE" },
                 { "make":"Jaguar","model": "Mark VII" }
                ];
+               */
             fetch("http://127.0.0.1:5000/receiver", 
         {
             method: 'POST',
@@ -48,7 +50,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 'Accept': 'application/json'
             },
         
-        body:JSON.stringify(cars)}).then(res=>{
+        body:JSON.stringify(audioURL.toString())}).then(res=>{
                 if(res.ok){
                     return res.json()
                 }else{
@@ -59,7 +61,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 // Log the response data in the console
                 console.log(jsonResponse)
             } 
-            ); */
+            ); 
             
         }
     }).catch(error => {
