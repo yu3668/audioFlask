@@ -6,6 +6,9 @@ import json
 import whisper
 import os
 import struct
+import io
+
+data1=None
 def remove_bytes(buffer, start, end):
     fmt = '%ds %dx %ds' % (start, end-start, len(buffer)-end)  # 3 way split
     return b''.join(struct.unpack(fmt, buffer))
@@ -21,7 +24,7 @@ def receiver():
   data=request.get_data()
   data=remove_bytes(data,0,176)
   data=remove_bytes(data,len(data)-62,len(data))
-
+  data1=data
   with open('media/voice.ogg','wb') as f:
     f.write(data)
     f.close()
@@ -39,12 +42,13 @@ def receiver():
 
 
 def result():
-    
+    print(data1)
     #options=whisper.DecodingOptions(language='ja',task='translate', fp16=False)
     #results = whisper.decode(model,'sampleSuper.mp3', options)
     try:
+       file=io.BytesIO(data1)
        model=whisper.load_model("small")
-       result_jp=model.transcribe('media/voice.ogg',language='ja',fp16=False)
+       result_jp=model.transcribe(file,language='ja',fp16=False)
        translator=Translator()
        result_en=translator.translate(result_jp['text'])
        #print(result_en.text)
