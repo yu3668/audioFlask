@@ -20,7 +20,7 @@ WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
-ARG UID=10001
+#ARG UID=10001
 RUN echo 'root:Docker!' | chpasswd
 RUN adduser \
     --disabled-password \
@@ -40,7 +40,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt
 
 # Switch to the non-privileged user to run the application.
-USER appuser
+USER root
 
 # Copy the source code into the container.
 COPY . .
