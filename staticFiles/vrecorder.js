@@ -5,6 +5,7 @@ const controllerWrapper = document.querySelector('.controllers')
 const State = ['Initial', 'Record', 'Download']
 let stateIndex = 0
 let mediaRecorder, chunks = [], audioURL = ''
+var blob1=null
 
 // mediaRecorder setup for audio
 if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
@@ -27,8 +28,9 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             //audioURL = window.URL.createObjectURL(blob)
             
             const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+            chunks=[]
             audioURL = window.URL.createObjectURL(blob)
-            fetch("http://127.0.0.1:8000/reci", 
+            /*fetch("http://127.0.0.1:8000/reci", 
             {
                 method: 'POST',
                 headers: {
@@ -47,7 +49,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                     // Log the response data in the console
                     console.log(jsonResponse)
                 } 
-                ); 
+                ); */
             /*const a = document.createElement("a");
             document.body.appendChild(a);
             a.style = "display:inline";
@@ -95,7 +97,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
       fd.append("audio_data",blob, "filename.ogg");
       xhr.open("POST","http://127.0.0.1:5000/reci",true);
       xhr.send(fd);
-            chunks = []
+      
         }
     }).catch(error => {
         console.log('Following error has occured : ',error)
@@ -126,7 +128,7 @@ const stopRecording = () => {
 }
 
 const downloadAudio = () => {
-    const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+    
     audioURL = window.URL.createObjectURL(blob)
     document.querySelector('audio').src = audioURL
     const downloadLink = document.createElement('a')
@@ -141,12 +143,35 @@ const downloadAudio = () => {
     
     
 }
-
-const addButton = (id, funString, text) => {
+const process=()=>{
+    const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+    var xhr=new XMLHttpRequest();
+      xhr.onload=function(e) {
+          if(this.readyState === 4) {
+              console.log("Server returned: ",e.target.responseText);
+          }
+      };
+    
+    var fd=new FormData();
+      fd.append("audio_data",blob, "filename.ogg");
+      xhr.open("POST","http://127.0.0.1:5000/reci",true);
+      xhr.send(fd);
+      chunks=[]
+}
+const addButton = (id, funString, text,href) => {
     const btn = document.createElement('button')
     btn.id = id
     btn.setAttribute('onclick', funString)
     btn.textContent = text
+    if (href!=''){
+        btn.addEventListener("click",function name() {
+            window.location.href=href
+            
+        });
+
+    }
+
+   
     controllerWrapper.append(btn)
 }
 
@@ -170,7 +195,7 @@ const application = (index) => {
             clearDisplay()
             clearControls()
 
-            addButton('record', 'record()', 'Start Recording')
+            addButton('record', 'record()', 'Start Recording','')
             break;
 
         case 'Record':
@@ -178,7 +203,7 @@ const application = (index) => {
             clearControls()
             
             addMessage('Recording...')
-            addButton('stop', 'stopRecording()', 'Stop Recording')
+            addButton('stop', 'stopRecording()', 'Stop Recording','')
             break
 
         case 'Download':
@@ -186,8 +211,10 @@ const application = (index) => {
             clearDisplay()
 
             addAudio()
-            
-            addButton('record', 'record()', 'Record Again')
+            //blob1=null
+            //chunks=[]
+            addButton('record', 'record()', 'Record Again','')
+            addButton('process','process()','script','http://127.0.0.1:5000/result')
             //downloadAudio()
             break
 

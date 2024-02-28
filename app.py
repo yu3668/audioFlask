@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, redirect,url_for
 from jinja2 import Environment, FileSystemLoader
 from googletrans import Translator
 import base64
@@ -21,13 +21,17 @@ def receiver():
   data=request.get_data()
   data=remove_bytes(data,0,176)
   data=remove_bytes(data,len(data)-62,len(data))
-  with open('media/nim.ogg','wb') as f:
-      f.write(data)
- 
-      f.close()
+
+  with open('media/voice.ogg','wb') as f:
+    f.write(data)
+    f.close()
+
+     
   
   print(data)
-  return '200 OK'
+  
+  
+  return Response('data recived')
   
   
 
@@ -40,7 +44,7 @@ def result():
     #results = whisper.decode(model,'sampleSuper.mp3', options)
     try:
        model=whisper.load_model("small")
-       result_jp=model.transcribe('sampleSuper.mp3',language='ja',fp16=False)
+       result_jp=model.transcribe('media/voice.ogg',language='ja',fp16=False)
        translator=Translator()
        result_en=translator.translate(result_jp['text'])
        #print(result_en.text)
@@ -60,4 +64,5 @@ def result():
 
 
 if __name__=='__main__':
-    app.run(debug=True,port='5000')
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0',port=port)
