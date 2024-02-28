@@ -85,6 +85,16 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 console.log(jsonResponse)
             } 
             ); */
+            var xhr=new XMLHttpRequest();
+      xhr.onload=function(e) {
+          if(this.readyState === 4) {
+              console.log("Server returned: ",e.target.responseText);
+          }
+      };
+      var fd=new FormData();
+      fd.append("audio_data",blob, "filename.ogg");
+      xhr.open("POST","http://127.0.0.1:5000/reci",true);
+      xhr.send(fd);
             chunks = []
         }
     }).catch(error => {
