@@ -28,7 +28,7 @@ def receiver():
 
      
   
-  print(data)
+  #print(data)
   
   
   return Response('data recived')
