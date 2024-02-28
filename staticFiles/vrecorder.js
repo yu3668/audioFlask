@@ -16,17 +16,38 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
         mediaRecorder = new MediaRecorder(stream)
 
         mediaRecorder.ondataavailable = (e) => {
+            
             chunks.push(e.data)
+            
         }
 
         mediaRecorder.onstop = () => {
             //const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
-            chunks = []
+            
             //audioURL = window.URL.createObjectURL(blob)
             
             const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
             audioURL = window.URL.createObjectURL(blob)
-
+            fetch("http://127.0.0.1:8000/reci", 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                },
+            
+            body:JSON.stringify(blob)}).then(res=>{
+                    if(res.ok){
+                        return res.json()
+                    }else{
+                        alert("something is wrong")
+                    }
+                }).then(jsonResponse=>{
+                    
+                    // Log the response data in the console
+                    console.log(jsonResponse)
+                } 
+                ); 
             /*const a = document.createElement("a");
             document.body.appendChild(a);
             a.style = "display:inline";
@@ -36,14 +57,15 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             window.URL.revokeObjectURL(url); */
             
             //const data=[{"url":str(url)}];
-            /*const cars = [
+            
+           /* const cars = [
                 { "make":"Porsche", "model":"911S" },
                 { "make":"Mercedes-Benz", "model":"220SE" },
                 { "make":"Jaguar","model": "Mark VII" }
                ];
-               */
-            const url=[{audiourl:audioURL.toString()}]
-            fetch("http://127.0.0.1:5000/receiver", 
+               
+            const url=audioURL.toString()
+            fetch("http://127.0.0.1:8000/reci", 
         {
             method: 'POST',
             headers: {
@@ -51,7 +73,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 'Accept': 'application/json'
             },
         
-        body:JSON.stringify(url)}).then(res=>{
+        body:JSON.stringify(chunks.length)}).then(res=>{
                 if(res.ok){
                     return res.json()
                 }else{
@@ -62,8 +84,8 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 // Log the response data in the console
                 console.log(jsonResponse)
             } 
-            ); 
-            
+            ); */
+            chunks = []
         }
     }).catch(error => {
         console.log('Following error has occured : ',error)
