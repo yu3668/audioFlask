@@ -20,8 +20,11 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div  class="text-start" ><textarea style="color:Blue;border-width:5px;padding:10px"id= 'txtarjp' name='Japanese' rows='20', cols='75'>{{result_jp}}</textarea>
-        <textarea style="color:Green;border-width:5px" id= 'txtaren' name='English' rows='20', cols='75'>{{result_en}}</textarea></div>
+        <div  class="text-center" >
+            <p><label for "txtarjp"> Source Script</label></p>
+            <textarea style="color:Blue;border-width:5px;padding:10px;"id= 'txtarjp' name='Japanese' rows='15', cols='70'>{{result_jp}}</textarea>
+            <p><label for "txtaren"> Translated Script</label></p>
+        <textarea style="color:Green;border-width:5px;padding:10px;" id= 'txtaren' name='English' rows='15', cols='70'>{{result_en}}</textarea></div>
         <div class="container"></div>
         <div class="display"><audio> </audio></div>
         <div class= "controllers">  </div>
