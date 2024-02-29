@@ -47,7 +47,7 @@ def result():
     try:
       # file=io.BytesIO(data)
        model=whisper.load_model("small")
-       result_src=model.transcribe('media/voice.ogg', language='ja', fp16=False)
+       result_src=model.transcribe('voice.ogg', language='ja', fp16=False)
        
        if len(result_src)!=0 :
           translator=Translator()
