@@ -7,6 +7,9 @@ import whisper
 import os
 import struct
 import io
+from pydub import AudioSegment
+import numpy as np
+from scipy.io import wavfile
 
 def remove_bytes(buffer, start, end):
     fmt = '%ds %dx %ds' % (start, end-start, len(buffer)-end)  # 3 way split
@@ -18,13 +21,26 @@ app = app = Flask(__name__, template_folder='templateFiles', static_folder='stat
 @app.route("/")
 def index():
     return render_template('index.html')
+@app.route('/test', methods=['GET'])
+def test():
+  mp3_file=AudioSegment.from_mp3('media/sampleSuper.mp3')
+  
+  wav_file=mp3_file.export('media/sampleSuper.wav',format='wav')
+  sample_rate,audio_data=wavfile.read('media/sampleSuper.wav')
+  np_data=np.asarray(audio_data,dtype=np.float32)
+  print(mp3_file.duration_seconds)
+  return Response(str(mp3_file.duration_seconds))
 @app.route('/reci',methods=['POST'])
 def receiver():
+  
   data = request.get_data()
   data=remove_bytes(data,0,176)
   data=remove_bytes(data,len(data)-62,len(data))
+
+  
   
   with open('media/voice.ogg','wb') as f:
+    
     f.write(data)
     f.close()
 
@@ -47,7 +63,7 @@ def result():
     try:
       # file=io.BytesIO(data)
        model=whisper.load_model("small")
-       result_src=model.transcribe('voice.ogg', language='ja', fp16=False)
+       result_src=model.transcribe('media/voice.ogg', language='ja', fp16=False)
        
        if len(result_src)!=0 :
           translator=Translator()
