@@ -1,6 +1,7 @@
 // collect DOMs
 const display = document.querySelector('.display')
 const controllerWrapper = document.querySelector('.controllers')
+const audioContext=new AudioContext()
 
 const State = ['Initial', 'Record', 'Download']
 let stateIndex = 0
@@ -163,6 +164,17 @@ const addButton = (id, funString, text,href) => {
     btn.id = id
     btn.setAttribute('onclick', funString)
     btn.textContent = text
+    btn.style.color='red'
+    /*const newspaperSpinning = [
+        { transform: "rotate(0) scale(1)" },
+        { transform: "rotate(360deg) scale(0)" },
+      ];
+      const newspaperTiming = {
+        duration: 2000,
+        iterations: 1,
+      };
+      
+    btn.animate(newspaperSpinning,newspaperTiming);*/
     if (href!=''){
         btn.addEventListener("click",function name() {
             window.location.href=href
