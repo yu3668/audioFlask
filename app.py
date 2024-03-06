@@ -20,7 +20,7 @@ app = app = Flask(__name__, template_folder='templateFiles', static_folder='stat
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 @app.route('/test', methods=['GET'])
 def test():
   mp3_file=AudioSegment.from_mp3('media/sampleSuper.mp3')
