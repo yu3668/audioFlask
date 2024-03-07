@@ -21,9 +21,10 @@ if (navigator.mediaDevices.getUserMedia) {
 
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
-
+    
+    
     visualize(stream);
-
+    
     record.onclick = function () {
       mediaRecorder.start();
       console.log(mediaRecorder.state);
@@ -78,6 +79,7 @@ if (navigator.mediaDevices.getUserMedia) {
       const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
       chunks = [];
       const audioURL = window.URL.createObjectURL(blob);
+      alert(blob.size)
       audio.src = audioURL;
       console.log("recorder stopped");
 
@@ -98,7 +100,12 @@ if (navigator.mediaDevices.getUserMedia) {
 
     mediaRecorder.ondataavailable = function (e) {
       chunks.push(e.data);
+      
+    
+
     };
+    const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+    alert(blob.size)
   };
 
   let onError = function (err) {
@@ -138,7 +145,7 @@ function visualize(stream) {
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = "rgb(0, 0, 0)";
+    canvasCtx.strokeStyle = "rgb(0, 0, 255)";
 
     canvasCtx.beginPath();
 
