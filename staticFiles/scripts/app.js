@@ -18,7 +18,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
   const constraints = { audio: true };
   let chunks = [];
-
+  
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
     
@@ -104,8 +104,14 @@ if (navigator.mediaDevices.getUserMedia) {
     
 
     };
+    
     const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
-    alert(blob.size)
+    const myTimeout = setTimeout(myGreeting, 5000);
+    function myGreeting() {
+      alert(blob.size);
+    }
+    
+    
   };
 
   let onError = function (err) {
