@@ -108,7 +108,7 @@ if (navigator.mediaDevices.getUserMedia) {
     const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
     const myTimeout = setTimeout(myGreeting, 5000);
     function myGreeting() {
-      alert(blob.size);
+      alert(chunks.size);
     }
     
     
