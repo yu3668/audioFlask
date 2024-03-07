@@ -1,12 +1,12 @@
 // Set up basic variables for app
-const record = document.querySelector(".record");
-const stop = document.querySelector(".stop");
+//const record = document.querySelector(".record");
+//const stop = document.querySelector(".stop");
 const soundClips = document.querySelector(".sound-clips");
 const canvas = document.querySelector(".visualizer");
 const mainSection = document.querySelector(".main-controls");
 
 // Disable stop button while not recording
-stop.disabled = true;
+//stop.disabled = true;
 
 // Visualiser setup - create web audio api context and canvas
 let audioCtx;
@@ -22,10 +22,32 @@ if (navigator.mediaDevices.getUserMedia) {
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
     
-    
+    mediaRecorder.start();
     visualize(stream);
     
-    record.onclick = function () {
+    const myTimeout = setInterval(myGreeting, 2000);
+    function myGreeting() {
+      alert(mediaRecorder.state);
+      mediaRecorder.stop();
+      alert(mediaRecorder.state);
+      
+    }
+    mediaRecorder.ondataavailable = function (e) {
+      chunks.push(e.data);
+     
+      blob=new Blob(chunks, { type: mediaRecorder.mimeType });
+      alert(blob.size);
+      chunks=[];
+      mediaRecorder.start();
+      
+
+    };
+
+
+    
+    
+    
+   /* record.onclick = function () {
       mediaRecorder.start();
       console.log(mediaRecorder.state);
       console.log("Recorder started.");
@@ -96,20 +118,12 @@ if (navigator.mediaDevices.getUserMedia) {
           clipLabel.textContent = newClipName;
         }
       };
-    };
+    };*/
 
-    mediaRecorder.ondataavailable = function (e) {
-      chunks.push(e.data);
-      
     
-
-    };
     
-    const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
-    const myTimeout = setTimeout(myGreeting, 5000);
-    function myGreeting() {
-      alert(chunks.size);
-    }
+    
+    
     
     
   };
