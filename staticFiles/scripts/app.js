@@ -25,11 +25,11 @@ if (navigator.mediaDevices.getUserMedia) {
     mediaRecorder.start();
     visualize(stream);
     
-    const myTimeout = setInterval(myGreeting, 2000);
+    const myTimeout = setInterval(myGreeting, 30000);
     function myGreeting() {
-      alert(mediaRecorder.state);
+      
       mediaRecorder.stop();
-      alert(mediaRecorder.state);
+      
       
     }
     mediaRecorder.ondataavailable = function (e) {
